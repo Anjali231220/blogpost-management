@@ -1,35 +1,38 @@
+import React from "react";
 import Register from "./pages/Register"
 import Login from "./pages/Login"
-import { createBrowserRouter, RouterProvider,Navigate, replace } from "react-router-dom";
+import { createBrowserRouter, RouterProvider,Navigate} from "react-router-dom";
 import Dashboard from "./Component/Dashboard";
 import { ToastContainer } from "react-toastify";
+import AuthGuard from "./auth/AuthGuard";
+
 const DefaultRouter = () => {
   const data=JSON.parse(localStorage.getItem("blog_rdata"))
   if(data){
-    <Navigate to="/login" replace/>
+    return< Navigate to="/dashboard" replace/>
   }
   else{
-   <Navigate to = "/register" replace/>
+   return<Navigate to = "/login" replace/>
   }
-}
+};
 function App() {
    const route = createBrowserRouter([
     {
       path: "/",
-      element: <DefaultRouter/>
+      element: <DefaultRouter/>,
     },
     {
       path: "/register",
-      element: <Register/>
+      element:  (<AuthGuard required={false}><Register /></AuthGuard>),
     },
     {
       path: "/login",
-      element: <Login/>
+      element: (<AuthGuard required={false}><Login /></AuthGuard>),
     },{
       path: "/dashboard",
-      element: <Dashboard/>
+       element: (<AuthGuard required={true}><Dashboard/></AuthGuard>),
     },
-   ])
+   ]);
 
   return  (<>
   <RouterProvider router={route}/>

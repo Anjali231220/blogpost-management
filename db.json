@@ -1,0 +1,12 @@
+{
+  "posts": [
+    {
+      "id": "4b4b",
+      "title": "Title 1",
+      "description": "Loreum Ipsum is simply dummy text of the price",
+      "author": "Vadukar Anjali",
+      "image": "https://cdn.dribbble.com/userupload/17922736/file/original-7095c532547679bafd96dd0455f03f0c.jpg?format=webp&resize=640x480&vertical=center",
+      "createdAt": "2026-02-06T10:41:07.080z"
+    }
+  ]
+}

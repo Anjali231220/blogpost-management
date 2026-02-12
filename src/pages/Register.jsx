@@ -4,23 +4,27 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 function Register() {
-  const [regData, setregData] = useState({
+  const [regData, setRegData] = useState({
     name: "",
     email: "",
     phone: "",
     password: "",
     conPassword: "",
   });
-  const [showPassword , setShowPassword]= useState(false);
-   const navigate = useNavigate();
-  const [errors, setError] = useState({});
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const navigate = useNavigate();
+
+  const [error, setError] = useState({});
+
   const handleChange = (e) => {
-    setregData({
+    setRegData({
       ...regData,
       [e.target.name]: e.target.value,
     });
     setError({
-      ...errors,
+      ...error,
       [e.target.name]: "",
     });
   };
@@ -29,142 +33,168 @@ function Register() {
     e.preventDefault();
     if (validate()) {
       localStorage.setItem("blog_rdata", JSON.stringify(regData));
-      toast.success("Register SuccessFully...");
-      navigate("/login")
+      toast.success("done");
+      navigate("/login");
     } else {
-      toast.error("Something Went Wrong..");
+      toast.error("somthing went wrong");
     }
   };
 
   const validate = () => {
-    const newErrors = {};
+    const newError = {};
     if (!regData.name.trim()) {
-      newErrors.name = "Full name is required.";
+      newError.name = "Full name is Required.";
     } else if (regData.name.length <= 3) {
-      newErrors.name = "Minimum 3 character required.";
+      newError.name = "Minimum 3 Character Required.";
     }
-
     if (!regData.email.trim()) {
-      newErrors.email = "Email is required.";
+      newError.email = "Email is Required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(regData.email)) {
-      newErrors.email = "Invalid Email format.";
+      newError.email = "Invalide Email formate.";
     }
-
-    if (!regData.phone.trim()) {
-      newErrors.phone = "Phone number is required.";
-    } else if (!/^[0-9]{10}$/.test(regData.phone)) {
-      newErrors.phone = "Phone must be in 10 digit.";
-    }
-
     if (!regData.password.trim()) {
-      newErrors.password = "Password is required.";
+      newError.password = "Password is Required.";
     } else if (regData.password.length < 6) {
-      newErrors.password = "Password 6 character required.";
+      newError.password = "Minimum 6 Character Required.";
     }
-
     if (!regData.conPassword.trim()) {
-      newErrors.conPassword = "Confirm Password is required.";
+      newError.conPassword = "Confirm Password is Required.";
     } else if (regData.conPassword.length < 6) {
-      newErrors.conPassword = "Comfirm Password 6 character required.";
+      newError.conPassword = "Minimum 6 Character Required.";
     } else if (regData.password !== regData.conPassword) {
-      newErrors.conPassword = "Password and Confirm Password are not same";
+      newError.conPassword = "Password and Confirm Password are not same!!.";
     }
-    setError(newErrors);
-    return Object.keys(newErrors).length === 0;
+    if (!regData.phone.trim()) {
+      newError.phone = "Phone is Required.";
+    } else if (!/^[0-9]{10}$/.test(regData.phone)) {
+      newError.phone = "Phone must be in 10 digit.";
+    }
+    setError(newError);
+    return Object.keys(newError).length === 0;
   };
 
   return (
-    <div>
-      <h1>Create Account</h1>
-      <p>join us and start your journey</p>
+    <div className="register">
+      <div className="register-card">
+        <h1 className="register-title">Create Account</h1>
+        <p className="register-subtitle">Join Us And Start Our Journey</p>
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Full Name</label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            placeholder="Enter Your full Name"
-            onChange={handleChange}
-          />
-          {errors.name && <span className="error-msg">{errors.name}</span>}
-        </div>
-        <div>
-          <label htmlFor="email">Email Address</label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            placeholder="Enter Your Email Address"
-            onChange={handleChange}
-          />
-          {errors.email && <span className="error-msg">{errors.email}</span>}
-        </div>
-        <div>
-          <label htmlFor="phone">Phone Number</label>
-          <input
-            type="tel"
-            name="phone"
-            id="phone"
-            placeholder="Enter Your Phone Number"
-            onChange={handleChange}
-          />
-          {errors.phone && <span className="error-msg">{errors.phone}</span>}
-        </div>
-       <div className="password-field">
-          <label htmlFor="password">Password</label>
-
-          <div className="input-wrapper">
+        <form className="register-form" onSubmit={handleSubmit}>
+          {/* Full Name */}
+          <div className="form-group">
+            <label htmlFor="name" className="form-label">
+              Full Name
+            </label>
             <input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              id="password"
-              placeholder="******"
+              type="text"
+              name="name"
+              id="name"
+              className="form-input"
+              placeholder="Enter Your Full Name"
               onChange={handleChange}
             />
-
-            <span
-              className="toggle-icon"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? "🙈" : "👁️"}
-            </span>
+            {error.name && <span className="form-error">{error.name}</span>}
           </div>
 
-          {errors.password && (
-            <span className="error-msg">{errors.password}</span>
-          )}
-        </div>
-
-        <div className="password-field">
-          <label htmlFor="password">Confirm Password</label>
-
-          <div className="input-wrapper">
+          {/* Email */}
+          <div className="form-group">
+            <label htmlFor="email" className="form-label">
+              Email Address
+            </label>
             <input
-              type={showPassword ? "text" : "password"}
-              name="conPassword"
-              id="conPassword"
-              placeholder="******"
+              type="email"
+              name="email"
+              id="email"
+              className="form-input"
+              placeholder="Enter Your Email Address"
               onChange={handleChange}
             />
-
-            <span
-              className="toggle-icon"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? "🙈" : "👁️"}
-            </span>
+            {error.email && <span className="form-error">{error.email}</span>}
           </div>
 
-          {errors.conPassword && (
-            <span className="error-msg">{errors.conPassword}</span>
-          )}
-        </div>
-       
-        <button type="submit">Register</button>
-      </form>
-      <p>Already have an Account? <Link to ="/login">Login here!</Link></p>
+          {/* Phone */}
+          <div className="form-group">
+            <label htmlFor="phone" className="form-label">
+              Phone Number
+            </label>
+            <input
+              type="tel"
+              name="phone"
+              id="phone"
+              className="form-input"
+              placeholder="Enter Your Phone Number"
+              onChange={handleChange}
+            />
+            {error.phone && <span className="form-error">{error.phone}</span>}
+          </div>
+
+          {/* Password */}
+          <div className="form-group">
+            <label htmlFor="password" className="form-label">
+              Password
+            </label>
+
+            <div className="password-wrapper">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                id="password"
+                className="form-input password-input"
+                placeholder="******"
+                onChange={handleChange}
+              />
+
+              <span
+                className="password-toggle"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? "🙈" : "👁️"}
+              </span>
+            </div>
+
+            {error.password && (
+              <span className="form-error">{error.password}</span>
+            )}
+          </div>
+
+          {/* Confirm Password */}
+          <div className="form-group">
+            <label htmlFor="conPassword" className="form-label">
+              Confirm Password
+            </label>
+
+            <div className="password-wrapper">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="conPassword"
+                id="conPassword"
+                className="form-input password-input"
+                placeholder="******"
+                onChange={handleChange}
+              />
+
+              <span
+                className="password-toggle"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? "🙈" : "👁️"}
+              </span>
+            </div>
+
+            {error.conPassword && (
+              <span className="form-error">{error.conPassword}</span>
+            )}
+          </div>
+
+          <button type="submit" className="register-btn">
+            Register
+          </button>
+        </form>
+
+        <p className="register-footer">
+          Already have an Account? <Link to="/login">Login</Link>
+        </p>
+      </div>
     </div>
   );
 }

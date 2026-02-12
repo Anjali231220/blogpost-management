@@ -4,107 +4,129 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 function Login() {
-  const [logData, setlogData] = useState({
+  const [logData, setLogData] = useState({
     email: "",
-    password: ""
+    password: "",
   });
-   const [showPassword , setShowPassword]= useState(false);
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const [error, setError] = useState({});
+
   const navigate = useNavigate();
-  const [errors, setError] = useState({});
+
   const handleChange = (e) => {
-    setlogData({
+    setLogData({
       ...logData,
       [e.target.name]: e.target.value,
     });
     setError({
-      ...errors,
+      ...error,
       [e.target.name]: "",
     });
   };
 
-   const handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      const saveData = JSON.parse(localStorage.getItem("blog_rdata"));
-      if(
-        saveData.email === logData.email &&
-        saveData.password === logData.password
-      )
-      {
-        localStorage.setItem("blog_lData", JSON.stringify(logData));
-      toast.success("Login Successfully.......");
-      navigate("/dashboard")
-      
-      }
-      else{
-       toast.error("Something went Wrong");
+      const data = JSON.parse(localStorage.getItem("blog_rdata"));
+      if (
+        data &&
+        data.email === logData.email &&
+        data.password === logData.password
+      ) {
+        localStorage.setItem("blog_ldata", JSON.stringify(logData));
+        toast.success("Done");
+        navigate("/dashboard");
+      } else {
+        toast.error("Somthing Went Wrong");
       }
     }
   };
 
   const validate = () => {
-    const newErrors = {};
+    const newError = {};
+
     if (!logData.email.trim()) {
-      newErrors.email = "Email is required.";
+      newError.email = "Email is Required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(logData.email)) {
-      newErrors.email = "Invalid Email format.";
+      newError.email = "Invalide Email formate.";
+    }
+    if (!logData.password.trim()) {
+      newError.password = "Password is Required.";
+    } else if (logData.password.length < 6) {
+      newError.password = "Minimum 6 Character Required.";
     }
 
-    if (!logData.password.trim()) {
-      newErrors.password = "Password is required.";
-    } else if (logData.password.length < 6) {
-      newErrors.password = "Password 6 character required.";
-    }
-    setError(newErrors);
-    return Object.keys(newErrors).length === 0;
+    setError(newError);
+    return Object.keys(newError).length === 0;
   };
 
   return (
-    <div>
-      <h1>Welcome </h1>
-      <p>join us and start your journey</p>
-
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email Address</label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            placeholder="Enter Your Email Address"
-            onChange={handleChange}
-          />
-          {errors.email && <span className="error-msg">{errors.email}</span>}
-        </div>
-        
-       <div className="password-field">
-          <label htmlFor="password">Password</label>
-
-          <div className="input-wrapper">
-            <input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              id="password"
-              placeholder="******"
-              onChange={handleChange}
-            />
-
-            <span
-              className="toggle-icon"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? "🙈" : "👁️"}
-            </span>
-          </div>
-
-          {errors.password && (
-            <span className="error-msg">{errors.password}</span>
-          )}
-        </div>
-        <button type="submit">Login</button>
-      </form>
-       <p>Don't have an Account? <Link to ="/register" >Regester here</Link></p>
-    </div>
+    <div className="register">
+       <div className="register-card">
+         <h1 className="register-title">Create Account</h1>
+         <p className="register-subtitle">Join Us And Start Our Journey</p>
+   
+         <form className="register-form" onSubmit={handleSubmit}>
+   
+           
+   
+           {/* Email */}
+           <div className="form-group">
+             <label htmlFor="email" className="form-label">Email Address</label>
+             <input
+               type="email"
+               name="email"
+               id="email"
+               className="form-input"
+               placeholder="Enter Your Email Address"
+               onChange={handleChange}
+             />
+             {error.email && <span className="form-error">{error.email}</span>}
+           </div>
+   
+           
+   
+           {/* Password */}
+           <div className="form-group">
+             <label htmlFor="password" className="form-label">Password</label>
+   
+             <div className="password-wrapper">
+               <input
+                 type={showPassword ? "text" : "password"}
+                 name="password"
+                 id="password"
+                 className="form-input password-input"
+                 placeholder="******"
+                 onChange={handleChange}
+               />
+   
+               <span
+                 className="password-toggle"
+                 onClick={() => setShowPassword(!showPassword)}
+               >
+                 {showPassword ? "🙈" : "👁️"}
+               </span>
+             </div>
+   
+             {error.password && (
+               <span className="form-error">{error.password}</span>
+             )}
+           </div>
+   
+           
+   
+           <button type="submit" className="register-btn">
+             Login
+           </button>
+         </form>
+   
+         <p className="register-footer">
+           Don't have an Account? <Link to="/register">Register</Link>
+         </p>
+       </div>
+     </div>
   );
 }
 
