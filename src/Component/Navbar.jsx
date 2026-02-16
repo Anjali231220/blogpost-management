@@ -2,8 +2,11 @@ import React from "react";
 import { FaBlog, FaHome, FaPlusSquare, FaSignOutAlt } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import "./Navbar.css"
+import { MdAnalytics } from "react-icons/md";
+
 
 export default function Navbar() {
+  const data =JSON.parse(localStorage.getItem("blog_rdata"));
     
   return (
     <nav className="navbar">
@@ -22,9 +25,15 @@ export default function Navbar() {
             <FaPlusSquare className="nav-icon" />
             Create Post
           </NavLink>
+ 
+          
+          <NavLink to="/charts" className="nav-item">
+            <MdAnalytics className="nav-icon" />Analystic
+          </NavLink>
+
         </div>
         <div className="navbar-actions">
-          <span className="user-name">Hi,User</span>
+          <span className="user-name">Hi,{data.name}</span>
 
           <button className="logout-btn">
             <FaSignOutAlt />
