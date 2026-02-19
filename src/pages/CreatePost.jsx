@@ -22,9 +22,10 @@ function CreatePost() {
     description: "",
     author: author?.name || "",
     imageurl: "",
-    createdAt: "",
     imageType: "url",
   });
+
+  
 
   const fileInputRef = useRef(null);
 
@@ -280,7 +281,20 @@ function CreatePost() {
                 Publish Post
               </button>
 
-              <button type="button" className="cancel-btn">
+             <button
+              className="cancel-btn"
+              type="button"
+              style={{ flex: 1 }}
+              onClick={() =>
+                setData({
+                   title: "",
+                   description: "",
+                    author: author?.name || "",
+                   imageurl: "",
+                   imageType: "url",
+                })
+              }
+            >
                 Clear Form
               </button>
             </div>
