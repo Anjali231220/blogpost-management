@@ -101,7 +101,10 @@
                       alt="Post"
                       className="post-card-image"
                     />
-
+                    
+                    <button className={favorite-btn}>
+                      <FaStar size={22} color="#ffffff"/>
+                    </button>
                     <div className="post-actions">
                       <button className="action-btn edit-btn" title="Edit Post">
                         <MdEdit size={22} color="#ffffff"  onClick={() => handleEdit(task.id)}/>
