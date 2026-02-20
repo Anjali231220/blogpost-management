@@ -289,7 +289,7 @@
 /*favorites button*/
 
 .favorite-btn{
-  position: relative;
+  position: absolute;
   top: 15px;
   left: 15px;
   background: rgba(75,85,99,0.9);
